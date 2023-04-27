@@ -1,21 +1,20 @@
 //const
 const container = document.getElementById("alphabetButtons");
-var answerDisplay = document.getElementById("hold");
-var answer = "";
-var hint = "";
-var life = 10;
-var wordDisplay = [];
-var winningCheck = "";
+let answerDisplay = document.getElementById("hold");
+let answer = "";
+let hint = "";
+let life = 10;
+let wordDisplay = [];
+let winningCheck = "";
 const containerHint = document.getElementById("clue");
 const buttonHint = document.getElementById("hint");
 const buttonReset = document.getElementById("reset");
 const livesDisplay = document.getElementById("mylives");
-var myStickman = document.getElementById("stickman");
-var context = myStickman.getContext("2d");
-
+let myStickman = document.getElementById("stickman");
+let context = myStickman.getContext("2d");
 //generate alphabet button
 function generateButton() {
-  var buttonsHTML = "abcdefghijklmnopqrstuvwxyz"
+  let buttonsHTML = "abcdefghijklmnopqrstuvwxyz"
     .split("")
     .map(
       (letter) =>
@@ -46,7 +45,7 @@ function handleClick(event) {
 const question = [
   "The Chosen Category Is Premier League Football Teams",
   "The Chosen Category Is Films",
-  "The Chosen Category Is Cities"
+  "The Chosen Category Is Cities",
 ];
 
 const categories = [
@@ -57,10 +56,10 @@ const categories = [
     "chelsea",
     "hull",
     "manchester-city",
-    "newcastle-united"
+    "newcastle-united",
   ],
   ["alien", "dirty-harry", "gladiator", "finding-nemo", "jaws"],
-  ["manchester", "milan", "madrid", "amsterdam", "prague"]
+  ["manchester", "milan", "madrid", "amsterdam", "prague"],
 ];
 
 const hints = [
@@ -71,22 +70,22 @@ const hints = [
     "Owned by A russian Billionaire",
     "Once managed by Phil Brown",
     "2013 FA Cup runners up",
-    "Gazza's first club"
+    "Gazza's first club",
   ],
   [
     "Science-Fiction horror film",
     "1971 American action film",
     "Historical drama",
     "Anamated Fish",
-    "Giant great white shark"
+    "Giant great white shark",
   ],
   [
     "Northern city in the UK",
     "Home of AC and Inter",
     "Spanish capital",
     "Netherlands capital",
-    "Czech Republic capital"
-  ]
+    "Czech Republic capital",
+  ],
 ];
 
 //set question,answer and hint
@@ -108,9 +107,9 @@ function setAnswer() {
 }
 
 function generateAnswerDisplay(word) {
-  var wordArray = word.split("");
+  let wordArray = word.split("");
   //console.log(wordArray);
-  for (var i = 0; i < answer.length; i++) {
+  for (let i = 0; i < answer.length; i++) {
     if (wordArray[i] !== "-") {
       wordDisplay.push("_");
     } else {
@@ -120,8 +119,9 @@ function generateAnswerDisplay(word) {
   return wordDisplay.join(" ");
 }
 
-function showHint() {
+function showHint(event) {
   containerHint.innerHTML = `Clue - ${hint}`;
+  handleClick(event);
 }
 
 buttonHint.addEventListener("click", showHint);
@@ -152,13 +152,13 @@ buttonReset.addEventListener("click", init);
 function guess(event) {
   const guessWord = event.target.id;
   const answerArray = answer.split("");
-  var counter = 0;
+  let counter = 0;
   if (answer === winningCheck) {
     livesDisplay.innerHTML = `YOU WIN!`;
     return;
   } else {
     if (life > 0) {
-      for (var j = 0; j < answer.length; j++) {
+      for (let j = 0; j < answer.length; j++) {
         if (guessWord === answerArray[j]) {
           wordDisplay[j] = guessWord;
           console.log(guessWord);
@@ -261,7 +261,7 @@ function leftLeg() {
   draw(60, 70, 20, 100);
 }
 
-var drawArray = [
+let drawArray = [
   rightLeg,
   leftLeg,
   rightArm,
@@ -271,5 +271,5 @@ var drawArray = [
   frame4,
   frame3,
   frame2,
-  frame1
+  frame1,
 ];
