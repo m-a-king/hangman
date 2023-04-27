@@ -9,10 +9,13 @@
   <body>
     <div class="wrapper">
       <h1>Hangman</h1>
-      <h2>Vanilla Javascript Hangman Game</h2>
-      <p>
-        Use the alphabet below to guess the word, or click hint to get a clue.
-      </p>
+      <h2>
+        Vanilla Javascript Hangman Game
+        <button class="cir tooltip" id="how">?</button>
+        <div class="tooltiptext">
+          Use the alphabet below to guess the word, or click hint to get a clue.
+        </div>
+      </h2>
     </div>
 
     <div class="wrapper">
@@ -20,14 +23,15 @@
       <p id="categoryName"></p>
       <div id="hold"></div>
       <p id="mylives"></p>
-      <p id="clue">Clue -</p>
       <canvas id="stickman"
         >This Text will show if the Browser does NOT support HTML5 Canvas
         tag</canvas
       >
       <div class="container">
-        <button class="btn-2" id="hint">Hint</button>
-        <button class="btn-2" id="reset">Play again</button>
+        <button class="rec-btn" id="hint">Hint</button>
+        <p id="clue">Clue -</p>
+
+        <!-- <button class="rec-btn" id="reset">Play again</button> -->
       </div>
     </div>
     <script src="src/index.js"></script>
