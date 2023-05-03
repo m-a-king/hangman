@@ -1,44 +1,39 @@
-//const
 const container = document.getElementById("alphabetButtons");
-let answerDisplay = document.getElementById("hold");
-let answer = "";
-let hint = "";
-let life = 10;
-let wordDisplay = [];
-let winningCheck = "";
+const answerDisplay = document.getElementById("hold");
 const containerHint = document.getElementById("clue");
 const buttonHint = document.getElementById("hint");
 const buttonReset = document.getElementById("reset");
 const livesDisplay = document.getElementById("mylives");
-let myStickman = document.getElementById("stickman");
-let context = myStickman.getContext("2d");
+const myStickman = document.getElementById("stickman");
+const context = myStickman.getContext("2d");
+
+let answer = "";
+let hint = "";
+let life = 10;
+let state = 0; // 0: running, 1: finished
+let wordDisplay = [];
+let winningCheck = "";
+
 //generate alphabet button
 function generateButton() {
-  let buttonsHTML = "abcdefghijklmnopqrstuvwxyz"
+  return "abcdefghijklmnopqrstuvwxyz"
     .split("")
     .map(
       (letter) =>
         `<button
-         class = "alphabetButtonJS" 
+         class="alphabet-button"
          id="${letter}"
          >
         ${letter}
         </button>`
     )
     .join("");
-
-  return buttonsHTML;
 }
 
 function handleClick(event) {
-  const isButton = event.target.nodeName === "BUTTON";
-  if (isButton) {
-    //console.dir(event.target.id);
-    //console.log(isButton);
-    const buttonId = document.getElementById(event.target.id);
-    buttonId.classList.add("selected");
+  if (event.target.nodeName === "BUTTON") {
+    event.target.classList.add("selected");
   }
-  return;
 }
 
 //word array
@@ -89,33 +84,21 @@ const hints = [
 ];
 
 //set question,answer and hint
-
 function setAnswer() {
   const categoryOrder = Math.floor(Math.random() * categories.length);
   const chosenCategory = categories[categoryOrder];
   const wordOrder = Math.floor(Math.random() * chosenCategory.length);
   const chosenWord = chosenCategory[wordOrder];
 
-  const categoryNameJS = document.getElementById("categoryName");
-  categoryNameJS.innerHTML = question[categoryOrder];
+  document.getElementById("categoryName").innerHTML = question[categoryOrder];
 
-  //console.log(chosenCategory);
-  //console.log(chosenWord);
   answer = chosenWord;
   hint = hints[categoryOrder][wordOrder];
   answerDisplay.innerHTML = generateAnswerDisplay(chosenWord);
 }
 
 function generateAnswerDisplay(word) {
-  let wordArray = word.split("");
-  //console.log(wordArray);
-  for (let i = 0; i < answer.length; i++) {
-    if (wordArray[i] !== "-") {
-      wordDisplay.push("_");
-    } else {
-      wordDisplay.push("-");
-    }
-  }
+  wordDisplay = word.split("").map((char) => (char === "-" ? "-" : "_"));
   return wordDisplay.join(" ");
 }
 
@@ -124,12 +107,12 @@ function showHint(event) {
   handleClick(event);
 }
 
-buttonHint.addEventListener("click", showHint);
 //setting initial condition
 function init() {
   answer = "";
   hint = "";
   life = 10;
+  state = 0;
   wordDisplay = [];
   winningCheck = "";
   context.clearRect(0, 0, 400, 400);
@@ -138,9 +121,8 @@ function init() {
   livesDisplay.innerHTML = `You have ${life} lives!`;
   setAnswer();
   container.innerHTML = generateButton();
-  container.addEventListener("click", handleClick);
-  console.log(answer);
-  //console.log(hint);
+  buttonHint.classList.remove("selected");
+  buttonHint.addEventListener("click", showHint);
 }
 
 window.onload = init();
@@ -150,48 +132,52 @@ buttonReset.addEventListener("click", init);
 
 //guess click
 function guess(event) {
-  const guessWord = event.target.id;
-  const answerArray = answer.split("");
-  let counter = 0;
-  if (answer === winningCheck) {
-    livesDisplay.innerHTML = `YOU WIN!`;
-    return;
-  } else {
-    if (life > 0) {
+  const isButton = event.target.nodeName === "BUTTON";
+  const isSelected = event.target.classList.contains("selected");
+
+  if (isButton && !isSelected && state == 0) {
+    handleClick(event);
+    const guessWord = event.target.id;
+    const answerArray = answer.split("");
+    let counter = 0;
+
+    if (answer === winningCheck) {
+      state = 1;
+      livesDisplay.innerHTML = `YOU WIN!`;
+      return;
+    } else if (life > 0) {
       for (let j = 0; j < answer.length; j++) {
         if (guessWord === answerArray[j]) {
           wordDisplay[j] = guessWord;
-          console.log(guessWord);
           answerDisplay.innerHTML = wordDisplay.join(" ");
           winningCheck = wordDisplay.join("");
-          //console.log(winningCheck)
           counter += 1;
         }
       }
       if (counter === 0) {
         life -= 1;
-        counter = 0;
         animate();
-      } else {
-        counter = 0;
       }
-      if (life > 1) {
-        livesDisplay.innerHTML = `You have ${life} lives!`;
-      } else if (life === 1) {
-        livesDisplay.innerHTML = `You have ${life} life!`;
-      } else {
-        livesDisplay.innerHTML = `GAME OVER!`;
-      }
-    } else {
-      return;
+      updateLivesDisplay();
     }
-    console.log(wordDisplay);
-    //console.log(counter);
-    //console.log(life);
+
     if (answer === winningCheck) {
+      state = 1;
       livesDisplay.innerHTML = `YOU WIN!`;
       return;
     }
+  }
+}
+
+function updateLivesDisplay() {
+  if (life > 1) {
+    livesDisplay.innerHTML = `You have ${life} lives!`;
+  } else if (life === 1) {
+    livesDisplay.innerHTML = `You have ${life} life!`;
+  } else {
+    state = 1;
+    answerDisplay.innerHTML = answer.split("").join(" ");
+    livesDisplay.innerHTML = `GAME OVER!`;
   }
 }
 
@@ -199,77 +185,45 @@ container.addEventListener("click", guess);
 
 // Hangman
 function animate() {
-  drawArray[life]();
-  //console.log(drawArray[life]);
+  drawPart(parts[life]);
 }
 
 function canvas() {
-  myStickman = document.getElementById("stickman");
-  context = myStickman.getContext("2d");
   context.beginPath();
   context.strokeStyle = "#fff";
   context.lineWidth = 2;
 }
 
-function head() {
-  myStickman = document.getElementById("stickman");
-  context = myStickman.getContext("2d");
+function drawCircle(x, y, radius) {
   context.beginPath();
-  context.arc(60, 25, 10, 0, Math.PI * 2, true);
+  context.arc(x, y, radius, 0, Math.PI * 2, true);
   context.stroke();
 }
 
-function draw($pathFromx, $pathFromy, $pathTox, $pathToy) {
-  context.moveTo($pathFromx, $pathFromy);
-  context.lineTo($pathTox, $pathToy);
+function drawLine(x1, y1, x2, y2) {
+  context.beginPath();
+  context.moveTo(x1, y1);
+  context.lineTo(x2, y2);
   context.stroke();
 }
 
-function frame1() {
-  draw(0, 150, 150, 150);
+function drawPart(part) {
+  if (part.type === "circle") {
+    drawCircle(part.x, part.y, part.radius);
+  } else if (part.type === "line") {
+    drawLine(part.x1, part.y1, part.x2, part.y2);
+  }
 }
 
-function frame2() {
-  draw(10, 0, 10, 600);
-}
-
-function frame3() {
-  draw(0, 5, 70, 5);
-}
-
-function frame4() {
-  draw(60, 5, 60, 15);
-}
-
-function torso() {
-  draw(60, 36, 60, 70);
-}
-
-function rightArm() {
-  draw(60, 46, 100, 50);
-}
-
-function leftArm() {
-  draw(60, 46, 20, 50);
-}
-
-function rightLeg() {
-  draw(60, 70, 100, 100);
-}
-
-function leftLeg() {
-  draw(60, 70, 20, 100);
-}
-
-let drawArray = [
-  rightLeg,
-  leftLeg,
-  rightArm,
-  leftArm,
-  torso,
-  head,
-  frame4,
-  frame3,
-  frame2,
-  frame1,
+const parts = [
+  { type: "line", x1: 60, y1: 70, x2: 100, y2: 100 }, // rightLeg
+  { type: "line", x1: 60, y1: 70, x2: 20, y2: 100 }, // leftLeg
+  { type: "line", x1: 60, y1: 46, x2: 100, y2: 50 }, // rightArm
+  { type: "line", x1: 60, y1: 46, x2: 20, y2: 50 }, // leftArm
+  { type: "line", x1: 60, y1: 36, x2: 60, y2: 70 }, // torso
+  { type: "circle", x: 60, y: 25, radius: 10 }, // head
+  { type: "line", x1: 60, y1: 5, x2: 60, y2: 15 }, // frame4
+  { type: "line", x1: 0, y1: 5, x2: 70, y2: 5 }, // frame3
+  { type: "line", x1: 10, y1: 0, x2: 10, y2: 600 }, // frame2
+  { type: "line", x1: 0, y1: 150, x2: 150, y2: 150 }, // frame1
 ];
