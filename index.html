@@ -8,30 +8,37 @@
 
   <body>
     <div class="wrapper">
-      <h1>Hangman</h1>
-      <h2>
-        Vanilla Javascript Hangman Game
-        <button class="cir tooltip" id="how">?</button>
-        <div class="tooltiptext">
-          Use the alphabet below to guess the word, or click hint to get a clue.
-        </div>
-      </h2>
-    </div>
-
-    <div class="wrapper">
-      <div class="alphabetButton" id="alphabetButtons"></div>
-      <p id="categoryName"></p>
-      <div id="hold"></div>
-      <p id="mylives"></p>
-      <canvas id="stickman"
-        >This Text will show if the Browser does NOT support HTML5 Canvas
-        tag</canvas
-      >
       <div class="container">
-        <button class="rec-btn" id="hint">Hint</button>
-        <p id="clue">Clue -</p>
+        <h1 class="container-title">Hangman</h1>
+        <div class="container-contents">
+          Vanilla Javascript Hangman Game
+          <div class="tooltip">?</div>
+          <div class="tooltip-text">
+            Use the alphabet below to guess the word,
+            <br />
+            or click hint to get a clue.
+          </div>
+        </div>
+      </div>
 
-        <button class="rec-btn" id="reset">Play again</button>
+      <div class="container">
+        <div class="container-contents flex-column">
+          <p id="mylives"></p>
+          <canvas id="stickman">
+            This Text will show if the Browser does NOT support HTML5 Canvas tag
+          </canvas>
+          <p id="categoryName"></p>
+          <p id="clue">Clue -</p>
+          <div id="hold"></div>
+          <div id="alphabetButtons"></div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="container-contents" style="margin-top: 2rem">
+          <button class="rec-btn hint" id="hint">Hint</button>
+          <button class="rec-btn reset" id="reset">Play Again</button>
+        </div>
       </div>
     </div>
     <script src="src/index.js"></script>
