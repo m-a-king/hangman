@@ -63,6 +63,101 @@ const hangmanGame = (function () {
         "Czech Republic capital",
       ],
     },
+    {
+      question: "The Chosen Category Is Games",
+      words: [
+        "league-of-legend",
+        "overwatch",
+        "starcraft",
+        "battle-ground",
+        "maple-story",
+      ],
+      hints: [
+        "Popular MOBA(AOS) game",
+        "First-person shooter by Blizzard",
+        "Classic real-time strategy game",
+        "Battle royale game",
+        "2D side-scrolling MMORPG",
+      ],
+    },
+    {
+      question: "The Chosen Category Is Animals",
+      words: ["elephant", "giraffe", "kangaroo", "penguin", "dolphin"],
+      hints: [
+        "Large mammal with tusks and trunk",
+        "Tallest land animal",
+        "Australian marsupial known for hopping",
+        "Flightless bird native to Antarctica",
+        "Intelligent marine mammal",
+      ],
+    },
+    {
+      question: "The Chosen Category Is Car Brands",
+      words: ["porsche", "ford", "ferrari", "bmw", "audi"],
+      hints: [
+        "German automaker known for sports cars and the 911 model",
+        "American automaker known for the Mustang",
+        "Italian automaker known for sports cars",
+        "German automaker with a blue and white logo",
+        "German automaker with four interlocking rings",
+      ],
+    },
+    {
+      question: "The Chosen Category Is Musicians",
+      words: [
+        "elvis-presley",
+        "madonna",
+        "beethoven",
+        "bob-dylan",
+        "freddie-mercury",
+      ],
+      hints: [
+        "The King of Rock and Roll",
+        "Queen of Pop",
+        "Classical composer and pianist",
+        "American singer-songwriter known for 'Blowin' in the Wind'",
+        "Lead vocalist of Queen",
+      ],
+    },
+    {
+      question: "The Chosen Category Is Authors",
+      words: [
+        "william-shakespeare",
+        "jane-austen",
+        "george-orwell",
+        "mark-twain",
+        "j-k-rowling",
+      ],
+      hints: [
+        "English playwright and poet",
+        "Wrote 'Pride and Prejudice'",
+        "Author of '1984' and 'Animal Farm'",
+        "Wrote 'The Adventures of Tom Sawyer'",
+        "Created the 'Harry Potter' series",
+      ],
+    },
+    {
+      question: "The Chosen Category Is Computer Terms",
+      words: ["algorithm", "database", "hardware", "software", "cache"],
+      hints: [
+        "Step-by-step process for calculations",
+        "Structured set of data",
+        "Physical components of a computer",
+        "Programs and applications",
+        "Temporary storage for quick access",
+      ],
+    },
+    {
+      question: "The Chosen Category Is Foods",
+      words: ["sushi", "pizza", "tacos", "hamburger", "ramen"],
+      hints: [
+        "Japanese raw fish dish",
+        "Italian dish with a dough base",
+        "Mexican dish with folded tortillas",
+        "American sandwich with ground beef patty",
+        "Japanese noodle soup",
+      ],
+    },
   ];
 
   const parts = [
@@ -126,7 +221,7 @@ const hangmanGame = (function () {
   function generateAnswerDisplay(word) {
     state.wordDisplay = word
       .split("")
-      .map((char) => (char === "-" ? "-" : "_"));
+      .map((char) => (char === "-" ? "-" : "_")); // 띄어쓰기
     return state.wordDisplay.join(" ");
   }
 
