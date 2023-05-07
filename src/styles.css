@@ -124,7 +124,7 @@ canvas {
   transition: all 0.5s;
   border: 1px solid black;
   cursor: pointer;
-  color:black;
+  color: black;
 }
 .rec-btn.hint {
   transform: translateX(-160%);
